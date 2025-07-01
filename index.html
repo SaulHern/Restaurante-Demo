@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Restaurante Demo | Pedidos Online</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header class="main-header">
+        <div class="header-content">
+            <div class="header-left">
+                <button class="menu-toggle" aria-label="Abrir menú">
+                    <span class="material-icons">menu</span>
+                </button>
+                <div class="logo">
+                    <h1>Mi Restaurante Demo</h1>
+                    <span>El Sabor que Esperas</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <span class="rating">⭐️ 4.8</span>
+                <button class="search-btn" aria-label="Buscar productos">
+                    <span class="material-icons">search</span>
+                </button>
+                <button class="user-btn" aria-label="Mi cuenta">
+                    <span class="material-icons">person</span>
+                </button>
+                <button class="cart-btn" aria-label="Ver carrito">
+                    <span class="material-icons">shopping_cart</span>
+                    <span class="cart-count">0</span>
+                </button>
+            </div>
+        </div>
+        <div class="delivery-info">
+            <div class="delivery-address">
+                <span class="material-icons">place</span>
+                <span>Calle Ficticia #123, Naucalpan</span>
+                <button class="change-address-btn"><span class="material-icons">arrow_drop_down</span></button>
+            </div>
+            <div class="delivery-time">
+                <span class="material-icons">delivery_dining</span>
+                <span>40 min</span>
+                <button class="edit-time-btn"><span class="material-icons">edit</span></button>
+            </div>
+        </div>
+    </header>
+
+    <nav class="main-nav">
+        <ul>
+            <li><a href="#inicio">INICIO</a></li>
+            <li><a href="#combos">COMBOS</a></li>
+            <li><a href="#platillos">PLATILLOS</a></li>
+            <li><a href="#postres">POSTRES</a></li>
+            <li><a href="#bebidas">BEBIDAS</a></li>
+            <li><a href="#contacto">CONTACTO</a></li>
+        </ul>
+    </nav>
+
+    <main class="main-content">
+        <section id="inicio" class="promo-banner">
+            <img src="https://via.placeholder.com/1200x300?text=GRAN+OFERTA+DE+LANZAMIENTO" alt="Oferta Especial">
+            <div class="promo-text">
+                <h2>¡$50 MXN de descuento en tu primer pedido con el cupón PRIMERACOMPRA!</h2>
+            </div>
+        </section>
+
+        <section class="points-section">
+            <h3>Acumula #MisPuntos.</h3>
+            <p>Con cada compra que hagas en nuestra web o en sucursal, acumulas puntos que podrás usar en tus próximas compras.</p>
+            <a href="#" class="btn-join">¡Únete ahora!</a>
+        </section>
+
+        <section class="category-section">
+            <h2 class="category-title">PLATILLOS PRINCIPALES 🍔🌮</h2>
+            <div class="product-grid">
+                <div class="product-card">
+                    <img src="https://via.placeholder.com/300x200?text=Hamburguesa+Clasica" alt="Hamburguesa Clásica">
+                    <h3>Hamburguesa Clásica</h3>
+                    <p class="price">$120.00</p>
+                    <button class="add-to-cart-btn" data-product-id="1" data-price="120.00">
+                        <span class="material-icons">add</span>
+                    </button>
+                </div>
+                <div class="product-card">
+                    <img src="https://via.placeholder.com/300x200?text=Tacos+de+Asada" alt="Tacos de Asada">
+                    <h3>Tacos de Asada (3 pz)</h3>
+                    <p class="price">$95.00</p>
+                    <button class="add-to-cart-btn" data-product-id="2" data-price="95.00">
+                        <span class="material-icons">add</span>
+                    </button>
+                </div>
+                <div class="product-card">
+                    <img src="https://via.placeholder.com/300x200?text=Alitas+BBQ" alt="Alitas BBQ">
+                    <h3>Alitas BBQ (6 pz)</h3>
+                    <p class="price">$150.00</p>
+                    <button class="add-to-cart-btn" data-product-id="3" data-price="150.00">
+                        <span class="material-icons">add</span>
+                    </button>
+                </div>
+                </div>
+        </section>
+
+        <div id="cart-popup" class="cart-popup">
+            <div class="cart-header">
+                <h2>TU CARRITO</h2>
+                <button class="close-cart-btn"><span class="material-icons">close</span></button>
+            </div>
+            <div class="cart-delivery-info">
+                <span class="material-icons">place</span>
+                <span>Calle Ficticia #123</span>
+                <button class="change-address-btn">Cambiar</button>
+            </div>
+            <p class="empty-cart-message">Tu carrito está vacío</p>
+            <div class="cart-items">
+                </div>
+            <div class="cart-summary">
+                </div>
+            <button class="checkout-btn">Proceder al pago</button>
+        </div>
+
+        <div id="order-type-popup" class="order-type-popup">
+            <div class="popup-content">
+                <h2>¿Cómo quieres tu pedido?</h2>
+                <div class="order-options">
+                    <button class="order-option active" data-type="delivery">Delivery</button>
+                    <button class="order-option" data-type="pickup">Pickup</button>
+                </div>
+                <div class="delivery-details">
+                    <p>Delivery a</p>
+                    <div class="address-display">
+                        <span>Calle Ficticia #123</span>
+                        <span>Naucalpan de Juárez, México</span>
+                    </div>
+                    <button class="change-address-btn">Cambiar</button>
+                </div>
+                <button class="close-popup-btn">Cerrar</button>
+            </div>
+        </div>
+
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
