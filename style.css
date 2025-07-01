@@ -353,7 +353,7 @@ a {
 }
 
 /* --- Carrito (Popup) --- */
-.cart-popup, .order-type-popup {
+.cart-popup, .order-type-popup, .search-popup {
     position: fixed;
     bottom: 0;
     left: 0;
@@ -370,7 +370,7 @@ a {
     overflow-y: auto;
 }
 
-.cart-popup.active, .order-type-popup.active {
+.cart-popup.active, .order-type-popup.active, .search-popup.active {
     transform: translateY(0);
 }
 
@@ -650,6 +650,136 @@ a {
     white-space: nowrap; /* Evita que el texto se rompa */
 }
 
+/* --- Estilos para el Menú Desplegable de Usuario --- */
+.user-btn {
+    position: relative; /* Para posicionar el dropdown */
+}
+
+.user-dropdown {
+    position: absolute;
+    top: calc(100% + 5px); /* Debajo del botón user-btn */
+    right: 0;
+    background-color: var(--secondary-dark);
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+    width: 250px;
+    padding: 10px 0;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: opacity 0.2s ease, visibility 0.2s ease, transform 0.2s ease;
+    z-index: 1050; /* Mayor que el header pero menor que otros popups */
+}
+
+.user-dropdown.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.dropdown-header {
+    padding: 10px 20px;
+    border-bottom: 1px solid var(--primary-dark);
+    margin-bottom: 10px;
+}
+
+.dropdown-header span {
+    display: block;
+    font-weight: bold;
+    color: var(--text-light);
+    font-size: 1.1em;
+}
+
+.dropdown-header small {
+    color: var(--gray-light);
+    font-size: 0.8em;
+}
+
+.user-dropdown ul {
+    list-style: none;
+    padding: 0;
+}
+
+.user-dropdown ul li a {
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+    color: var(--text-light);
+    transition: background-color 0.2s ease;
+    font-size: 0.95em;
+}
+
+.user-dropdown ul li a .material-icons {
+    margin-right: 10px;
+    font-size: 1.2em;
+    color: var(--gray-light);
+}
+
+.user-dropdown ul li a:hover {
+    background-color: var(--primary-dark);
+}
+
+/* --- Estilos para el Pop-up de Búsqueda --- */
+.search-popup {
+    /* Base ya definida, solo ajustes específicos para el tipo de popup */
+    top: 0;
+    height: 100%;
+    border-radius: 0; /* No border-radius arriba como los otros */
+    transform: translateY(-100%); /* Inicialmente oculto hacia arriba */
+    display: flex; /* Para centrar el contenido */
+    flex-direction: column;
+    padding: 20px;
+    max-height: 100vh; /* Ocupa toda la altura */
+}
+
+.search-popup .popup-content {
+    width: 100%;
+    max-width: 600px; /* Ancho máximo para el campo de búsqueda */
+    margin: 0 auto; /* Centrar */
+}
+
+.search-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.close-search-btn {
+    background: none;
+    border: none;
+    color: var(--text-light);
+    font-size: 2em; /* Icono de flecha más grande */
+    cursor: pointer;
+    margin-right: 15px;
+}
+
+#search-input {
+    flex-grow: 1; /* Ocupa el espacio restante */
+    padding: 12px 15px;
+    border: 1px solid var(--gray-medium);
+    border-radius: 25px;
+    background-color: var(--primary-dark);
+    color: var(--text-light);
+    font-size: 1.1em;
+    outline: none; /* Quitar el borde de enfoque por defecto */
+    transition: border-color 0.2s ease;
+}
+
+#search-input::placeholder {
+    color: var(--gray-medium);
+}
+
+#search-input:focus {
+    border-color: var(--accent-yellow);
+}
+
+.search-placeholder-text {
+    text-align: center;
+    color: var(--gray-light);
+    font-size: 1.1em;
+    margin-top: 50px; /* Espacio para el texto "¿Qué buscas?" */
+}
+
 
 /* Media Queries para responsividad (ej. tablets y desktops) */
 @media (min-width: 600px) {
@@ -681,6 +811,7 @@ a {
         height: 150px;
     }
 
+    /* Popups en desktop se posicionan en la esquina inferior derecha o central */
     .cart-popup, .order-type-popup {
         width: 450px; /* Ancho fijo para popups en desktop */
         right: 20px;
@@ -688,6 +819,15 @@ a {
         transform: translateY(100%);
         border-radius: 15px;
         bottom: 20px;
+    }
+    /* El popup de búsqueda abarca toda la pantalla horizontalmente */
+    .search-popup {
+        width: 100%;
+        max-width: none; /* No limita el ancho */
+        left: 0;
+        right: 0;
+        margin: 0 auto;
+        border-radius: 0; /* Sin bordes redondeados */
     }
 }
 
