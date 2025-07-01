@@ -25,6 +25,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const menuToggle = document.querySelector('.menu-toggle');
     const mainNav = document.querySelector('.main-nav');
 
+    // Nuevos elementos para Buscar
+    const searchBtn = document.querySelector('.search-btn');
+    const searchPopup = document.getElementById('search-popup');
+    const closeSearchBtn = document.querySelector('.close-search-btn');
+    const searchInput = document.getElementById('search-input');
+
+    // Nuevos elementos para Cuenta
+    const userBtn = document.querySelector('.user-btn');
+    const userDropdown = document.querySelector('.user-dropdown');
+    const carnalePesosLink = document.getElementById('carnali-pesos-link');
+    const misComprasLink = document.getElementById('mis-compras-link');
+    const miCuentaLink = document.getElementById('mi-cuenta-link');
+    const cerrarSesionLink = document.getElementById('cerrar-sesion-link');
+
+
     // --- Estado del Carrito (Array para almacenar productos) ---
     let cart = [];
     const SHIPPING_FEE = 15.00; // Costo de envío fijo para el demo
@@ -294,6 +309,71 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // --- Funcionalidad del Pop-up de Búsqueda ---
+    searchBtn.addEventListener('click', () => {
+        searchPopup.classList.add('active');
+        searchInput.focus(); // Enfocar el input cuando se abre
+    });
+
+    closeSearchBtn.addEventListener('click', () => {
+        searchPopup.classList.remove('active');
+        searchInput.value = ''; // Limpiar el input al cerrar
+    });
+
+    // Opcional: Simular búsqueda al presionar Enter
+    searchInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            const searchTerm = searchInput.value.trim();
+            if (searchTerm) {
+                alert(`Simulación de búsqueda: Buscando "${searchTerm}"...`);
+                // Aquí podrías añadir lógica para filtrar productos o redirigir
+                searchPopup.classList.remove('active'); // Cerrar popup después de "buscar"
+                searchInput.value = '';
+            } else {
+                alert('Por favor, ingresa algo para buscar.');
+            }
+        }
+    });
+
+    // --- Funcionalidad del Menú Desplegable de Usuario ---
+    userBtn.addEventListener('click', (event) => {
+        userDropdown.classList.toggle('active');
+        event.stopPropagation(); // Evitar que el clic se propague al documento
+    });
+
+    // Cerrar dropdown si se hace clic fuera
+    document.addEventListener('click', (event) => {
+        if (!userDropdown.contains(event.target) && !userBtn.contains(event.target)) {
+            userDropdown.classList.remove('active');
+        }
+    });
+
+    // Simular acciones de los enlaces del dropdown
+    carnalePesosLink.addEventListener('click', (e) => {
+        e.preventDefault(); // Evitar que el enlace navegue realmente
+        alert('Simulación: Ver puntos Carnali pesos.');
+        userDropdown.classList.remove('active');
+    });
+
+    misComprasLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        alert('Simulación: Ver historial de compras.');
+        userDropdown.classList.remove('active');
+        // Aquí podrías añadir una nueva sección oculta y mostrarla
+    });
+
+    miCuentaLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        alert('Simulación: Editar información de mi cuenta.');
+        userDropdown.classList.remove('active');
+    });
+
+    cerrarSesionLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        alert('Simulación: Sesión cerrada.');
+        userDropdown.classList.remove('active');
+        // Aquí podrías redirigir a una página de login o actualizar el estado de login
+    });
 
     // --- Inicialización al cargar la página ---
     updateCartUI(); // Asegura que el contador y el estado del carrito sean correctos al inicio
