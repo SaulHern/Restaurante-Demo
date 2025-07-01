@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -29,6 +28,18 @@
                 <button class="user-btn" aria-label="Mi cuenta">
                     <span class="material-icons">person</span>
                 </button>
+                <div class="user-dropdown">
+                    <div class="dropdown-header">
+                        <span>Saul Alberto</span>
+                        <small>albertosaul341@gmail.com</small>
+                    </div>
+                    <ul>
+                        <li><a href="#" id="carnali-pesos-link"><span class="material-icons">card_giftcard</span> Carnali pesos</a></li>
+                        <li><a href="#" id="mis-compras-link"><span class="material-icons">receipt_long</span> Mis compras</a></li>
+                        <li><a href="#" id="mi-cuenta-link"><span class="material-icons">person_outline</span> Mi cuenta</a></li>
+                        <li><a href="#" id="cerrar-sesion-link"><span class="material-icons">logout</span> Cerrar sesión</a></li>
+                    </ul>
+                </div>
                 <button class="cart-btn" aria-label="Ver carrito">
                     <span class="material-icons">shopping_cart</span>
                     <span class="cart-count">0</span>
@@ -241,6 +252,16 @@
         </div>
 
     </main>
+
+    <div id="search-popup" class="search-popup">
+        <div class="popup-content">
+            <div class="search-header">
+                <button class="close-search-btn"><span class="material-icons">arrow_back</span></button>
+                <input type="text" id="search-input" placeholder="Buscar productos..." autofocus>
+            </div>
+            <p class="search-placeholder-text">¿Qué estás buscando?</p>
+            </div>
+    </div>
 
     <script src="script.js"></script>
 </body>
