@@ -128,7 +128,7 @@ a {
     align-items: center;
     padding: 0 5px;
 }
-.change-address-btn .material-icons, .edit-time-btn .material_icons {
+.change-address-btn .material-icons, .edit-time-btn .material-icons {
     font-size: 1.2em;
 }
 
@@ -378,6 +378,143 @@ a {
     background-color: #c0392b;
 }
 
+/* --- Estilos para los items dentro del carrito --- */
+.cart-items {
+    max-height: 300px; /* Limita la altura para que el scroll aparezca si hay muchos items */
+    overflow-y: auto; /* Habilita el scroll vertical */
+    margin-bottom: 20px;
+    padding-right: 10px; /* Para que el scrollbar no se pegue al borde */
+}
+
+.cart-item {
+    display: flex;
+    align-items: center;
+    background-color: var(--primary-dark);
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.cart-item img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 5px;
+    margin-right: 15px;
+}
+
+.item-details {
+    flex-grow: 1;
+}
+
+.item-details h4 {
+    font-size: 1em;
+    margin-bottom: 5px;
+    color: var(--text-light);
+}
+
+.item-details .item-price {
+    font-size: 0.9em;
+    color: var(--accent-yellow);
+    font-weight: bold;
+}
+
+.item-controls {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.item-controls button {
+    background: none;
+    border: 1px solid var(--gray-medium);
+    color: var(--text-light);
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 1.2em;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.item-controls button:hover {
+    background-color: var(--accent-red);
+    border-color: var(--accent-red);
+}
+
+.item-controls .item-quantity {
+    font-size: 1em;
+    color: var(--text-light);
+    min-width: 20px; /* Para que el número no salte al cambiar */
+    text-align: center;
+}
+
+.remove-item-btn {
+    background: none;
+    border: none;
+    color: var(--gray-medium);
+    font-size: 1.5em;
+    cursor: pointer;
+    margin-left: 10px;
+    transition: color 0.2s ease;
+}
+
+.remove-item-btn:hover {
+    color: var(--accent-red);
+}
+
+/* --- Estilos para el resumen del carrito --- */
+.cart-summary {
+    border-top: 1px solid var(--primary-dark);
+    padding-top: 15px;
+    margin-top: 15px;
+}
+
+.summary-line {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    font-size: 1em;
+    color: var(--gray-light);
+}
+
+.summary-line span:last-child {
+    font-weight: bold;
+    color: var(--text-light);
+}
+
+.total-line {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: var(--accent-yellow);
+    margin-top: 15px;
+    padding-top: 10px;
+    border-top: 1px dashed var(--gray-medium);
+}
+
+.total-line span:last-child {
+    color: var(--accent-yellow);
+}
+
+/* Ajustes para el botón de cambiar dirección del carrito */
+.cart-change-address-btn {
+    background-color: var(--primary-dark);
+    color: var(--text-light);
+    border-radius: 5px;
+    padding: 5px 10px;
+    font-size: 0.8em;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+.cart-change-address-btn:hover {
+    background-color: var(--accent-red);
+}
+
 /* --- Pop-up de Tipo de Pedido --- */
 .order-type-popup {
     /* Mismos estilos base que el carrito */
@@ -486,7 +623,7 @@ a {
         gap: 15px;
     }
     .menu-toggle {
-        display: none; /* Ocultar en pantallas más grandes si tienes un menú completo */
+        display: none; /* Ocultar en pantallas más grandes si tienes un un menú completo */
     }
 
     .main-nav ul {
