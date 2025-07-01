@@ -234,6 +234,50 @@ document.addEventListener('DOMContentLoaded', () => {
         // alert('Menú lateral se abriría aquí (funcionalidad no completa en este demo).');
     });
 
+    // --- Funcionalidad de Navegación y Active State ---
+    const navLinks = document.querySelectorAll('.main-nav ul li a');
+    const sections = document.querySelectorAll('main section'); // Todas tus secciones principales
+
+    // Función para añadir la clase 'active-link' al enlace de navegación
+    function setActiveNavLink() {
+        let currentSectionId = '';
+        // Un pequeño offset para que la sección activa cambie antes de que la sección toque la parte superior.
+        // mainNav.offsetHeight asegura que la altura de la navegación sticky no tape el inicio de la sección.
+        const offset = mainNav.offsetHeight + 20;
+
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop - offset;
+            const sectionBottom = sectionTop + section.offsetHeight; // Usamos offsetHeight para incluir padding/border
+            if (window.scrollY >= sectionTop && window.scrollY < sectionBottom) {
+                currentSectionId = section.id;
+            }
+        });
+
+        navLinks.forEach(link => {
+            link.classList.remove('active-link');
+            // Comparamos el href del enlace con el ID de la sección actual
+            if (link.getAttribute('href') === `#${currentSectionId}`) {
+                link.classList.add('active-link');
+            }
+        });
+    }
+
+    // Listener para el scroll
+    window.addEventListener('scroll', setActiveNavLink);
+
+    // Listener para los clics en los enlaces de navegación (para asegurar el activo al inicio)
+    navLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            // No necesitamos scrollIntoView porque `scroll-behavior: smooth` ya lo maneja
+            // Pero sí queremos actualizar la clase activa inmediatamente
+            navLinks.forEach(l => l.classList.remove('active-link'));
+            e.target.classList.add('active-link');
+        });
+    });
+    // Llama a la función al cargar para establecer el link activo inicial
+    setActiveNavLink();
+
+
     // --- Funcionalidad del Botón de Checkout ---
     checkoutBtn.addEventListener('click', () => {
         if (cart.length > 0) {
