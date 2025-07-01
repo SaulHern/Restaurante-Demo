@@ -1,46 +1,189 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // --- Elementos del DOM ---
     const cartCount = document.querySelector('.cart-count');
     const addToCartButtons = document.querySelectorAll('.add-to-cart-btn');
     const cartPopup = document.getElementById('cart-popup');
     const closeCartBtn = document.querySelector('.close-cart-btn');
     const emptyCartMessage = document.querySelector('.empty-cart-message');
     const cartItemsContainer = document.querySelector('.cart-items');
+    const cartSubtotal = document.getElementById('cart-subtotal');
+    const shippingCost = document.getElementById('shipping-cost');
+    const cartTotal = document.getElementById('cart-total');
+    const checkoutBtn = document.querySelector('.checkout-btn');
 
     const orderTypePopup = document.getElementById('order-type-popup');
-    const deliveryAddressDisplay = document.querySelector('.delivery-address'); // El de la cabecera
+    const deliveryAddressDisplayHeader = document.querySelector('.delivery-address'); // El de la cabecera
     const closeOrderTypePopupBtn = orderTypePopup.querySelector('.close-popup-btn');
     const orderOptions = orderTypePopup.querySelectorAll('.order-option');
+    const cartChangeAddressBtn = document.querySelector('.cart-change-address-btn'); // Botón cambiar dir en carrito
 
-    let cartItemCount = 0; // Para el contador del carrito
+    const headerAddressSpan = document.getElementById('header-current-address'); // Dirección en header
+    const cartAddressSpan = document.getElementById('cart-current-address'); // Dirección en carrito popup
+    const popupStreetAddressSpan = document.getElementById('popup-street-address'); // Dirección calle en popup
+    const popupCityAddressSpan = document.getElementById('popup-city-address'); // Dirección ciudad en popup
 
-    // --- Funcionalidad del Carrito ---
+    const menuToggle = document.querySelector('.menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
 
-    addToCartButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            cartItemCount++;
-            cartCount.textContent = cartItemCount;
-            // Mostrar el pop-up del carrito cuando se agrega el primer item
-            if (cartItemCount === 1) {
-                cartPopup.classList.add('active');
-                emptyCartMessage.style.display = 'none'; // Ocultar mensaje de carrito vacío
+    // --- Estado del Carrito (Array para almacenar productos) ---
+    let cart = [];
+    const SHIPPING_FEE = 15.00; // Costo de envío fijo para el demo
+
+    // --- Dirección actual (simulada) ---
+    let currentDeliveryAddress = {
+        street: 'Calle Ficticia #123',
+        city: 'Naucalpan de Juárez, México'
+    };
+
+    // --- Funciones del Carrito ---
+
+    // Función para actualizar el DOM del carrito
+    function updateCartUI() {
+        cartItemsContainer.innerHTML = ''; // Limpiar items existentes
+        let subtotal = 0;
+
+        if (cart.length === 0) {
+            emptyCartMessage.style.display = 'block';
+            checkoutBtn.disabled = true; // Deshabilitar botón de pago si carrito está vacío
+        } else {
+            emptyCartMessage.style.display = 'none';
+            checkoutBtn.disabled = false;
+
+            cart.forEach(item => {
+                const itemTotal = item.price * item.quantity;
+                subtotal += itemTotal;
+
+                const cartItemElement = document.createElement('div');
+                cartItemElement.classList.add('cart-item');
+                cartItemElement.dataset.productId = item.id; // Guarda el ID para fácil referencia
+
+                cartItemElement.innerHTML = `
+                    <img src="${item.image}" alt="${item.name}">
+                    <div class="item-details">
+                        <h4>${item.name}</h4>
+                        <span class="item-price">$${item.price.toFixed(2)}</span>
+                    </div>
+                    <div class="item-controls">
+                        <button class="decrease-quantity-btn" aria-label="Disminuir cantidad">-</button>
+                        <span class="item-quantity">${item.quantity}</span>
+                        <button class="increase-quantity-btn" aria-label="Aumentar cantidad">+</button>
+                    </div>
+                    <button class="remove-item-btn" aria-label="Eliminar producto">
+                        <span class="material-icons">delete</span>
+                    </button>
+                `;
+                cartItemsContainer.appendChild(cartItemElement);
+            });
+        }
+
+        // Actualizar el resumen de totales
+        cartSubtotal.textContent = `$${subtotal.toFixed(2)}`;
+        shippingCost.textContent = `$${(cart.length > 0 ? SHIPPING_FEE : 0).toFixed(2)}`; // Envío solo si hay productos
+        cartTotal.textContent = `$${(subtotal + (cart.length > 0 ? SHIPPING_FEE : 0)).toFixed(2)}`;
+
+        // Actualizar el contador global del carrito
+        cartCount.textContent = cart.reduce((total, item) => total + item.quantity, 0);
+    }
+
+    // Añadir producto al carrito
+    function addProductToCart(product) {
+        const existingItem = cart.find(item => item.id === product.id);
+
+        if (existingItem) {
+            existingItem.quantity++;
+        } else {
+            cart.push({ ...product, quantity: 1 });
+        }
+        updateCartUI();
+        cartPopup.classList.add('active'); // Asegura que el carrito se muestre
+    }
+
+    // Gestionar la cantidad de un producto
+    function updateItemQuantity(productId, change) {
+        const itemIndex = cart.findIndex(item => item.id === productId);
+
+        if (itemIndex > -1) {
+            cart[itemIndex].quantity += change;
+            if (cart[itemIndex].quantity <= 0) {
+                cart.splice(itemIndex, 1); // Eliminar si la cantidad es 0 o menos
             }
+            updateCartUI();
+        }
+    }
 
-            // Simular añadir un item al carrito (aquí podrías añadir la lógica para crear elementos HTML)
-            console.log(`Producto agregado. Total en carrito: ${cartItemCount}`);
-            // Por ahora, solo mostramos el pop-up y actualizamos el contador.
-            // Una lógica más completa añadiría el producto real al cartItemsContainer.
+    // Eliminar un producto completo del carrito
+    function removeItemFromCart(productId) {
+        cart = cart.filter(item => item.id !== productId);
+        updateCartUI();
+    }
+
+    // --- Listeners para añadir productos ---
+    addToCartButtons.forEach(button => {
+        button.addEventListener('click', (event) => {
+            const productElement = event.target.closest('.product-card');
+            const productId = productElement.querySelector('.add-to-cart-btn').dataset.productId;
+            const productName = productElement.querySelector('.add-to-cart-btn').dataset.name;
+            const productPrice = parseFloat(productElement.querySelector('.add-to-cart-btn').dataset.price);
+            const productImage = productElement.querySelector('.add-to-cart-btn').dataset.image;
+
+            const product = {
+                id: productId,
+                name: productName,
+                price: productPrice,
+                image: productImage
+            };
+            addProductToCart(product);
         });
+    });
+
+    // --- Delegación de eventos para los botones de cantidad y eliminar en el carrito ---
+    cartItemsContainer.addEventListener('click', (event) => {
+        const target = event.target;
+        // Encuentra el elemento padre .cart-item
+        const cartItemElement = target.closest('.cart-item');
+
+        if (!cartItemElement) return; // Si el clic no fue dentro de un cart-item, salir
+
+        const productId = cartItemElement.dataset.productId;
+
+        if (target.classList.contains('increase-quantity-btn')) {
+            updateItemQuantity(productId, 1);
+        } else if (target.classList.contains('decrease-quantity-btn')) {
+            updateItemQuantity(productId, -1);
+        } else if (target.classList.contains('remove-item-btn') || target.closest('.remove-item-btn')) {
+            // Permite hacer clic en el span del icono o en el botón
+            removeItemFromCart(productId);
+        }
+    });
+
+    // --- Abrir/Cerrar Carrito ---
+    document.querySelector('.cart-btn').addEventListener('click', () => {
+        cartPopup.classList.toggle('active');
     });
 
     closeCartBtn.addEventListener('click', () => {
         cartPopup.classList.remove('active');
     });
 
-    // --- Funcionalidad del Pop-up de Tipo de Pedido ---
+    // --- Funcionalidad del Pop-up de Tipo de Pedido y Dirección ---
+
+    // Función para actualizar la dirección mostrada en todos los lugares
+    function updateAddressDisplay() {
+        headerAddressSpan.textContent = `${currentDeliveryAddress.street}, ${currentDeliveryAddress.city}`;
+        cartAddressSpan.textContent = `${currentDeliveryAddress.street}`;
+        popupStreetAddressSpan.textContent = currentDeliveryAddress.street;
+        popupCityAddressSpan.textContent = currentDeliveryAddress.city;
+    }
 
     // Abre el pop-up al hacer clic en la dirección de entrega de la cabecera
-    deliveryAddressDisplay.addEventListener('click', () => {
+    deliveryAddressDisplayHeader.addEventListener('click', () => {
         orderTypePopup.classList.add('active');
+    });
+
+    // Abre el pop-up al hacer clic en el botón de cambiar dirección del carrito
+    cartChangeAddressBtn.addEventListener('click', () => {
+        orderTypePopup.classList.add('active');
+        cartPopup.classList.remove('active'); // Opcional: cierra el carrito al abrir el selector de dirección
     });
 
     // Cierra el pop-up de tipo de pedido
@@ -54,30 +197,61 @@ document.addEventListener('DOMContentLoaded', () => {
             orderOptions.forEach(opt => opt.classList.remove('active')); // Desactiva todos
             option.classList.add('active'); // Activa el seleccionado
             console.log(`Tipo de pedido seleccionado: ${option.dataset.type}`);
-            // Aquí podrías añadir lógica para cambiar la información de entrega en la cabecera
-            // o en el carrito, según la selección.
+            // Aquí podrías guardar el tipo de pedido en una variable global si lo necesitas:
+            // let selectedOrderType = option.dataset.type;
         });
     });
 
-    // --- Funcionalidad del Menú de Hamburguesa (para móviles) ---
-    // Si bien no lo implementamos completamente con un menú lateral,
-    // puedes expandirlo para mostrar / ocultar el menú de navegación principal.
-    const menuToggle = document.querySelector('.menu-toggle');
-    const mainNav = document.querySelector('.main-nav');
+    // Simular "Cambiar" dirección dentro del pop-up de tipo de pedido
+    orderTypePopup.querySelector('.delivery-details .change-address-btn').addEventListener('click', () => {
+        // En una app real, aquí se abriría un mapa o un formulario para introducir nueva dirección
+        alert('Simulación: Aquí se abriría la opción para cambiar la dirección o seleccionar una guardada.');
 
-    menuToggle.addEventListener('click', () => {
-        mainNav.classList.toggle('open'); // Necesitarías CSS para .main-nav.open
-        // Esto es un placeholder. Para un menú lateral real necesitarías más CSS y JS.
-        console.log('Menú de hamburguesa clickeado');
+        // Para este demo, podemos cambiarla a una dirección diferente de forma ficticia
+        // Puedes poner aquí direcciones predefinidas o un prompt para simular input
+        const newStreet = prompt("Ingresa la nueva calle:", "Av. Siempre Viva #742");
+        const newCity = prompt("Ingresa la nueva ciudad:", "Springfield, USA");
+
+        if (newStreet && newCity) {
+            currentDeliveryAddress = {
+                street: newStreet,
+                city: newCity
+            };
+            updateAddressDisplay(); // Actualiza todas las visualizaciones de dirección
+            alert('Dirección actualizada a: ' + newStreet + ', ' + newCity);
+        } else {
+            alert('Cambio de dirección cancelado o datos incompletos.');
+        }
+
+        // orderTypePopup.classList.remove('active'); // Opcional: cierra el popup automáticamente
     });
 
-    // Cierra el pop-up del carrito y el de tipo de pedido si se hace clic fuera (opcional)
-    // document.addEventListener('click', (event) => {
-    //     if (!cartPopup.contains(event.target) && !addToCartButtons[0].contains(event.target) && cartPopup.classList.contains('active')) {
-    //         cartPopup.classList.remove('active');
-    //     }
-    //     if (!orderTypePopup.contains(event.target) && !deliveryAddressDisplay.contains(event.target) && orderTypePopup.classList.contains('active')) {
-    //         orderTypePopup.classList.remove('active');
-    //     }
-    // });
+    // --- Funcionalidad del Menú de Hamburguesa (para móviles) ---
+    // (Este es un placeholder, para un menú lateral real necesitarías más CSS y JS para el toggle)
+    menuToggle.addEventListener('click', () => {
+        mainNav.classList.toggle('open'); // Necesitarías CSS para .main-nav.open para una animación real
+        // Para este demo, también podemos simular un menú simple mostrando un alert
+        // alert('Menú lateral se abriría aquí (funcionalidad no completa en este demo).');
+    });
+
+    // --- Funcionalidad del Botón de Checkout ---
+    checkoutBtn.addEventListener('click', () => {
+        if (cart.length > 0) {
+            alert(`¡Simulación de Pago!\n` +
+                  `Total a pagar: ${cartTotal.textContent}\n` +
+                  `Productos:\n${cart.map(item => `- ${item.name} (${item.quantity} x $${item.price.toFixed(2)})`).join('\n')}\n` +
+                  `Dirección de entrega: ${currentDeliveryAddress.street}, ${currentDeliveryAddress.city}`);
+            // Aquí en una aplicación real, se redirigiría a una pasarela de pago o confirmación
+            cart = []; // Vaciar el carrito después de "pagar"
+            updateCartUI();
+            cartPopup.classList.remove('active');
+        } else {
+            alert('Tu carrito está vacío. Agrega productos para proceder al pago.');
+        }
+    });
+
+
+    // --- Inicialización al cargar la página ---
+    updateCartUI(); // Asegura que el contador y el estado del carrito sean correctos al inicio
+    updateAddressDisplay(); // Asegura que la dirección se muestre correctamente al inicio
 });
