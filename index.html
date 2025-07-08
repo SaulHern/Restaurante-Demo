@@ -3,266 +3,668 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mi Restaurante Demo | Pedidos Online</title>
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <title>TacoNauta - Diseño de Portafolios</title>
+    <style>
+        /* --- Google Font --- */
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap');
+
+        /* --- Variables CSS --- */
+        :root {
+            --primary-color: #00BFFF; /* Deep Sky Blue para acentos espaciales */
+            --dark-bg: #0c0a1d; /* Azul noche oscuro */
+            --surface-bg: #1a182e;
+            --text-color: #FFFFFF;
+            --text-muted: #A0A0B0;
+            --border-color: #333344;
+        }
+
+        /* --- Reseteo y Estilos Base --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--text-color);
+            overflow-x: hidden;
+        }
+
+        button {
+            font-family: 'Montserrat', sans-serif;
+            cursor: pointer;
+            border: none;
+            border-radius: 8px;
+        }
+
+        /* --- Contenedor Principal --- */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* --- Header y Navegación --- */
+        .main-header {
+            background-color: #000;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-weight: 900;
+            font-size: 1.5rem;
+        }
+
+        .logo span {
+            color: var(--primary-color);
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .action-btn {
+            background: none;
+            color: var(--text-color);
+            font-size: 1.5rem;
+            position: relative;
+        }
+
+        #cart-count {
+            position: absolute;
+            top: -5px;
+            right: -10px;
+            background-color: red;
+            color: white;
+            border-radius: 50%;
+            padding: 2px 6px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            display: none; /* Oculto por defecto */
+        }
+
+        .nav-menu {
+            background-color: var(--dark-bg);
+            padding: 15px 0;
+            border-bottom: 1px solid var(--border-color);
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        .nav-menu ul {
+            list-style: none;
+            display: flex;
+            gap: 30px;
+        }
+        
+        .nav-menu a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        .nav-menu a:hover, .nav-menu a.active {
+            color: var(--primary-color);
+        }
+
+        /* --- Hero Section --- */
+        .hero {
+            background-color: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 80px 20px;
+            margin-bottom: 40px;
+            background-image: linear-gradient(rgba(12, 10, 29, 0.8), rgba(12, 10, 29, 0.8)), url('https://via.placeholder.com/1200x400.png/0c0a1d/000000?text=');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .hero-content h1 {
+            font-size: 4rem;
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+        }
+
+        .hero-content p {
+            font-size: 1.5rem;
+            color: var(--text-color);
+            font-weight: bold;
+        }
+
+        /* --- Sección de Productos --- */
+        .menu-section h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            padding-left: 20px;
+        }
+
+        #product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            padding: 20px;
+        }
+
+        .product-card {
+            background-color: var(--surface-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid var(--border-color);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+        }
+
+        .product-placeholder {
+            height: 180px;
+            background-color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2rem;
+        }
+
+        .product-info {
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .product-info h3 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        .product-info p {
+            color: var(--text-muted);
+            flex-grow: 1;
+            margin-bottom: 20px;
+        }
+
+        .product-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .product-price {
+            font-size: 1.4rem;
+            font-weight: bold;
+        }
+
+        .add-to-cart-btn {
+            background-color: var(--primary-color);
+            color: #000;
+            font-size: 1.5rem;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+        
+        .add-to-cart-btn:hover {
+            background-color: #fff;
+        }
+        
+        /* --- Modal Genérico --- */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: var(--surface-bg);
+            padding: 40px;
+            border-radius: 12px;
+            text-align: center;
+            width: 90%;
+            max-width: 500px;
+            position: relative;
+        }
+        
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 1.8rem;
+            color: var(--text-muted);
+            background: none;
+            border: none;
+        }
+
+        .modal-content h2 {
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+
+        .modal-options {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .modal-option-btn {
+            flex: 1;
+            padding: 15px;
+            font-size: 1rem;
+            font-weight: bold;
+            background-color: #333;
+            color: var(--text-color);
+            transition: background-color 0.3s ease;
+        }
+        
+        .modal-option-btn.active {
+            background-color: var(--primary-color);
+            color: #000;
+        }
+
+        .modal-main-btn {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            background-color: #000;
+            color: var(--text-color);
+            border: 1px solid var(--primary-color);
+        }
+
+        /* --- Carrito de Compras Lateral (Side Cart) --- */
+        .side-cart {
+            position: fixed;
+            top: 0;
+            right: -100%; /* Inicia fuera de la pantalla */
+            width: 100%;
+            max-width: 400px;
+            height: 100%;
+            background-color: var(--dark-bg);
+            z-index: 1001;
+            transition: right 0.4s ease-in-out;
+            display: flex;
+            flex-direction: column;
+            border-left: 1px solid var(--border-color);
+        }
+
+        .side-cart.open {
+            right: 0;
+        }
+
+        .cart-header {
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .cart-header h2 {
+            font-size: 1.5rem;
+        }
+
+        #cart-items-container {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 20px;
+        }
+        
+        #cart-empty-msg {
+            text-align: center;
+            color: var(--text-muted);
+            margin-top: 40px;
+        }
+        
+        .cart-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .cart-item-info {
+            flex-grow: 1;
+            margin-left: 15px;
+        }
+
+        .cart-item-info h4 {
+            margin-bottom: 5px;
+        }
+
+        .cart-item-price {
+            color: var(--text-muted);
+        }
+
+        .cart-item-quantity {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .quantity-btn {
+            background-color: #333;
+            color: var(--text-color);
+            width: 25px;
+            height: 25px;
+            border-radius: 5px;
+        }
+        
+        .cart-footer {
+            padding: 20px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .subtotal {
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .checkout-btn {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            background-color: var(--primary-color);
+            color: #000;
+        }
+    </style>
 </head>
 <body>
 
-    <header class="main-header">
-        <div class="header-content">
-            <div class="header-left">
-                <button class="menu-toggle" aria-label="Abrir menú">
-                    <span class="material-icons">menu</span>
-                </button>
-                <div class="logo">
-                    <h1>Mi Restaurante Demo</h1>
-                    <span>El Sabor que Esperas</span>
-                </div>
+    <div id="order-type-modal" class="modal">
+        <div class="modal-content">
+            <button class="close-btn" id="close-order-modal">&times;</button>
+            <h2>¿Listo para el despegue?</h2>
+            <div class="modal-options">
+                <button class="modal-option-btn active">Envío a Domicilio</button>
+                <button class="modal-option-btn">Recoger en Base</button>
             </div>
-            <div class="header-right">
-                <span class="rating">⭐️ 4.8</span>
-                <button class="search-btn" aria-label="Buscar productos">
-                    <span class="material-icons">search</span>
-                </button>
-                <button class="user-btn" aria-label="Mi cuenta">
-                    <span class="material-icons">person</span>
-                </button>
-                <div class="user-dropdown">
-                    <div class="dropdown-header">
-                        <span>Saul Alberto</span>
-                        <small>albertosaul341@gmail.com</small>
-                    </div>
-                    <ul>
-                        <li><a href="#" id="carnali-pesos-link"><span class="material-icons">card_giftcard</span> Carnali pesos</a></li>
-                        <li><a href="#" id="mis-compras-link"><span class="material-icons">receipt_long</span> Mis compras</a></li>
-                        <li><a href="#" id="mi-cuenta-link"><span class="material-icons">person_outline</span> Mi cuenta</a></li>
-                        <li><a href="#" id="cerrar-sesion-link"><span class="material-icons">logout</span> Cerrar sesión</a></li>
-                    </ul>
-                </div>
-                <button class="cart-btn" aria-label="Ver carrito">
-                    <span class="material-icons">shopping_cart</span>
-                    <span class="cart-count">0</span>
-                </button>
-            </div>
+            <button class="modal-main-btn">Ingresar Coordenadas</button>
         </div>
-        <div class="delivery-info">
-            <div class="delivery-address">
-                <span class="material-icons">place</span>
-                <span id="header-current-address"></span> <button class="change-address-btn"><span class="material-icons">arrow_drop_down</span></button>
+    </div>
+
+    <aside id="side-cart" class="side-cart">
+        <div class="cart-header">
+            <h2>Carga de la Nave</h2>
+            <button class="close-btn" id="close-cart-btn">&times;</button>
+        </div>
+        <div id="cart-items-container">
+            <p id="cart-empty-msg">La carga está vacía.</p>
             </div>
-            <div class="delivery-time">
-                <span class="material-icons">delivery_dining</span>
-                <span>40 min</span>
-                <button class="edit-time-btn"><span class="material-icons">edit</span></button>
+        <div class="cart-footer">
+            <div class="subtotal">
+                <span>Subtotal</span>
+                <span id="cart-subtotal">$0.00</span>
+            </div>
+            <button class="checkout-btn">Iniciar Viaje</button>
+        </div>
+    </aside>
+
+    <header class="main-header">
+        <div class="container navbar">
+            <div class="logo">TACO<span>NAUTA</span></div>
+            <div class="nav-actions">
+                <button class="action-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                </button>
+                 <button class="action-btn" id="open-cart-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+                    <span id="cart-count"></span>
+                </button>
             </div>
         </div>
     </header>
 
-    <nav class="main-nav">
-        <ul>
-            <li><a href="#inicio">INICIO</a></li>
-            <li><a href="#combos">COMBOS</a></li>
-            <li><a href="#platillos">PLATILLOS</a></li>
-            <li><a href="#postres">POSTRES</a></li>
-            <li><a href="#bebidas">BEBIDAS</a></li>
-            <li><a href="#contacto">CONTACTO</a></li>
-        </ul>
+    <nav class="nav-menu">
+        <div class="container">
+            <ul>
+                <li><a href="#" class="category-link active" data-category="all">INICIO</a></li>
+                <li><a href="#" class="category-link" data-category="combos">COMBOS</a></li>
+                <li><a href="#" class="category-link" data-category="burgers">BURGERS</a></li>
+                <li><a href="#" class="category-link" data-category="tacos">TACOS</a></li>
+                <li><a href="#" class="category-link" data-category="extras">EXTRAS</a></li>
+                <li><a href="#" class="category-link" data-category="bebidas">BEBIDAS CÓSMICAS</a></li>
+            </ul>
+        </div>
     </nav>
-
-    <main class="main-content">
-        <section id="inicio" class="promo-banner">
-            <img src="https://via.placeholder.com/1200x300?text=GRAN+OFERTA+DE+LANZAMIENTO" alt="Oferta Especial">
-            <div class="promo-text">
-                <h2>¡$50 MXN de descuento en tu primer pedido con el cupón PRIMERACOMPRA!</h2>
+    
+    <main>
+        <section class="hero">
+            <div class="hero-content">
+                <h1>COMBO BIG BANG</h1>
+                <p>1 Hamburguesa Meteoro + Papas Cráter + Bebida Cósmica por $189</p>
             </div>
         </section>
 
-        <section class="points-section">
-            <h3>Acumula #MisPuntos.</h3>
-            <p>Con cada compra que hagas en nuestra web o en sucursal, acumulas puntos que podrás usar en tus próximas compras.</p>
-            <a href="#" class="btn-join">¡Únete ahora!</a>
+        <section class="menu-section container">
+            <h2 id="menu-title">Especiales de la Galaxia 🚀</h2>
+            <div id="product-grid">
+                </div>
         </section>
-
-        <section class="category-section" id="platillos">
-            <h2 class="category-title">PLATILLOS PRINCIPALES 🍔🌮</h2>
-            <div class="product-grid">
-                <div class="product-card">
-                    <img src="https://via.placeholder.com/300x200?text=Hamburguesa+Clasica" alt="Hamburguesa Clásica">
-                    <h3>Hamburguesa Clásica</h3>
-                    <p class="price">$120.00</p>
-                    <button class="add-to-cart-btn" data-product-id="1" data-name="Hamburguesa Clásica" data-price="120.00" data-image="https://via.placeholder.com/300x200?text=Hamburguesa+Clasica">
-                        <span class="material-icons">add</span>
-                    </button>
-                </div>
-                <div class="product-card">
-                    <img src="https://via.placeholder.com/300x200?text=Tacos+de+Asada" alt="Tacos de Asada">
-                    <h3>Tacos de Asada (3 pz)</h3>
-                    <p class="price">$95.00</p>
-                    <button class="add-to-cart-btn" data-product-id="2" data-name="Tacos de Asada (3 pz)" data-price="95.00" data-image="https://via.placeholder.com/300x200?text=Tacos+de+Asada">
-                        <span class="material-icons">add</span>
-                    </button>
-                </div>
-                <div class="product-card">
-                    <img src="https://via.placeholder.com/300x200?text=Alitas+BBQ" alt="Alitas BBQ">
-                    <h3>Alitas BBQ (6 pz)</h3>
-                    <p class="price">$150.00</p>
-                    <button class="add-to-cart-btn" data-product-id="3" data-name="Alitas BBQ (6 pz)" data-price="150.00" data-image="https://via.placeholder.com/300x200?text=Alitas+BBQ">
-                        <span class="material-icons">add</span>
-                    </button>
-                </div>
-            </div>
-        </section>
-
-        <section class="category-section" id="combos">
-            <h2 class="category-title">COMBOS 🍗🍔🍟</h2>
-            <div class="product-grid">
-                <div class="product-card">
-                    <img src="https://via.placeholder.com/300x200?text=Combo+Doble" alt="Combo Doble">
-                    <h3>Combo Doble Burger</h3>
-                    <p class="price">$250.00</p>
-                    <button class="add-to-cart-btn" data-product-id="4" data-name="Combo Doble Burger" data-price="250.00" data-image="https://via.placeholder.com/300x200?text=Combo+Doble">
-                        <span class="material-icons">add</span>
-                    </button>
-                </div>
-                <div class="product-card">
-                    <img src="https://via.placeholder.com/300x200?text=Combo+Alitas" alt="Combo Alitas">
-                    <h3>Combo Alitas + Cerveza</h3>
-                    <p class="price">$190.00</p>
-                    <button class="add-to-cart-btn" data-product-id="5" data-name="Combo Alitas + Cerveza" data-price="190.00" data-image="https://via.placeholder.com/300x200?text=Combo+Alitas">
-                        <span class="material-icons">add</span>
-                    </button>
-                </div>
-            </div>
-        </section>
-
-        <section class="category-section" id="postres">
-            <h2 class="category-title">POSTRES 🍰🍩</h2>
-            <div class="product-grid">
-                <div class="product-card">
-                    <img src="https://via.placeholder.com/300x200?text=Cheesecake" alt="Cheesecake">
-                    <h3>Cheesecake de Fresa</h3>
-                    <p class="price">$75.00</p>
-                    <button class="add-to-cart-btn" data-product-id="6" data-name="Cheesecake de Fresa" data-price="75.00" data-image="https://via.placeholder.com/300x200?text=Cheesecake">
-                        <span class="material-icons">add</span>
-                    </button>
-                </div>
-                <div class="product-card">
-                    <img src="https://via.placeholder.com/300x200?text=Brownie" alt="Brownie">
-                    <h3>Brownie con Helado</h3>
-                    <p class="price">$80.00</p>
-                    <button class="add-to-cart-btn" data-product-id="7" data-name="Brownie con Helado" data-price="80.00" data-image="https://via.placeholder.com/300x200?text=Brownie">
-                        <span class="material-icons">add</span>
-                    </button>
-                </div>
-            </div>
-        </section>
-
-        <section class="category-section" id="bebidas">
-            <h2 class="category-title">BEBIDAS 🥤🍺</h2>
-            <div class="product-grid">
-                <div class="product-card">
-                    <img src="https://via.placeholder.com/300x200?text=Refresco" alt="Refresco">
-                    <h3>Refresco (Lata)</h3>
-                    <p class="price">$35.00</p>
-                    <button class="add-to-cart-btn" data-product-id="8" data-name="Refresco (Lata)" data-price="35.00" data-image="https://via.placeholder.com/300x200?text=Refresco">
-                        <span class="material-icons">add</span>
-                    </button>
-                </div>
-                <div class="product-card">
-                    <img src="https://via.placeholder.com/300x200?text=Agua" alt="Agua Natural">
-                    <h3>Agua Natural</h3>
-                    <p class="price">$25.00</p>
-                    <button class="add-to-cart-btn" data-product-id="9" data-name="Agua Natural" data-price="25.00" data-image="https://via.placeholder.com/300x200?text=Agua">
-                        <span class="material-icons">add</span>
-                    </button>
-                </div>
-            </div>
-        </section>
-
-        <section class="info-section" id="contacto">
-            <h2 class="category-title">CONTÁCTANOS ✉️📍</h2>
-            <div class="contact-info-grid">
-                <div class="contact-card">
-                    <h3>Dirección</h3>
-                    <p>Calle Ficticia #123, Colonia Imaginaria</p>
-                    <p>Naucalpan de Juárez, México</p>
-                </div>
-                <div class="contact-card">
-                    <h3>Teléfono</h3>
-                    <p>+52 55 1234 5678</p>
-                </div>
-                <div class="contact-card">
-                    <h3>Email</h3>
-                    <p>info@mirestaurantedemo.com</p>
-                </div>
-                <div class="contact-card">
-                    <h3>Horario</h3>
-                    <p>Lun - Vie: 12:00 PM - 10:00 PM</p>
-                    <p>Sáb - Dom: 1:00 PM - 11:00 PM</p>
-                </div>
-            </div>
-        </section>
-
-        <div id="cart-popup" class="cart-popup">
-            <div class="cart-header">
-                <h2>TU CARRITO</h2>
-                <button class="close-cart-btn"><span class="material-icons">close</span></button>
-            </div>
-            <div class="cart-delivery-info">
-                <span class="material-icons">place</span>
-                <span id="cart-current-address"></span> <button class="change-address-btn cart-change-address-btn">Cambiar</button> </div>
-            <p class="empty-cart-message">Tu carrito está vacío</p>
-            <div class="cart-items">
-                </div>
-            <div class="cart-summary">
-                <div class="summary-line">
-                    <span>Subtotal</span>
-                    <span id="cart-subtotal">$0.00</span>
-                </div>
-                <div class="summary-line">
-                    <span>Costo de envío</span>
-                    <span id="shipping-cost">$0.00</span>
-                </div>
-                <div class="summary-line total-line">
-                    <span>Total</span>
-                    <span id="cart-total">$0.00</span>
-                </div>
-            </div>
-            <button class="checkout-btn">Proceder al pago</button>
-        </div>
-
-        <div id="order-type-popup" class="order-type-popup">
-            <div class="popup-content">
-                <h2>¿Cómo quieres tu pedido?</h2>
-                <div class="order-options">
-                    <button class="order-option active" data-type="delivery">Delivery</button>
-                    <button class="order-option" data-type="pickup">Pickup</button>
-                </div>
-                <div class="delivery-details">
-                    <p>Delivery a</p>
-                    <div class="address-display">
-                        <span id="popup-street-address"></span>
-                        <span id="popup-city-address"></span>
-                    </div>
-                    <button class="change-address-btn">Cambiar</button>
-                </div>
-                <button class="close-popup-btn">Cerrar</button>
-            </div>
-        </div>
-
     </main>
 
-    <div id="search-popup" class="search-popup">
-        <div class="popup-content">
-            <div class="search-header">
-                <button class="close-search-btn"><span class="material-icons">arrow_back</span></button>
-                <input type="text" id="search-input" placeholder="Buscar productos..." autofocus>
-            </div>
-            <p class="search-placeholder-text">¿Qué estás buscando?</p>
-            </div>
-    </div>
 
-    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // --- Base de Datos de Productos (Simulada y Ficticia) ---
+            const products = [
+                { id: 1, name: 'Taco Supernova', price: 45.00, category: 'tacos', emoji: '🌮', description: 'Explosión de pastor con nuestro adobo secreto y piña caramelizada.' },
+                { id: 2, name: 'Nebulosa de Suadero', price: 52.00, category: 'tacos', emoji: '🌌', description: 'Suadero celestial confitado lentamente en tortilla de cometa (maíz azul).' },
+                { id: 3, name: 'Aros de Saturno', price: 75.00, category: 'extras', emoji: '🪐', description: 'Aros de cebolla crujientes con aderezo de chipotle espacial.' },
+                { id: 4, name: 'Combo Cosmonauta', price: 299.00, category: 'combos', emoji: '🧑‍🚀', description: '2 Tacos Supernova, 2 Nebulosas y 2 Aguas de Horchata Lunar.' },
+                { id: 5, name: 'Hamburguesa Meteoro', price: 145.00, category: 'burgers', emoji: '🍔', description: 'Doble carne de sirloin, queso estelar (cheddar) y salsa de magma (picante).' },
+                { id: 6, 'name': 'Poción Lunar', price: 80.00, category: 'bebidas', emoji: '🍹', description: 'Bebida azul brillante y refrescante con cítricos y un toque de misterio.' },
+                { id: 7, name: 'Jugo de Marte', price: 75.00, category: 'bebidas', emoji: '🥤', description: 'Mezcla exótica de frutos rojos del planeta vecino, servido bien frío.' },
+                { id: 8, name: 'Papas Cráter', price: 60.00, category: 'extras', emoji: '🍟', description: 'Papas en gajo sazonadas con polvo de estrellas (especias de la casa).' },
+                { id: 9, name: 'Quesadilla Pulsar', price: 95.00, category: 'tacos', emoji: '🧀', description: 'Costra de queso gigante rellena de tu carne favorita y guacamole.' },
+                { id: 10, name: 'AstroBurger de Pollo', price: 130.00, category: 'burgers', emoji: '🐔', description: 'Pechuga de pollo crujiente, lechuga hidropónica y mayonesa de ajo.'}
+            ];
+
+            // --- Elementos del DOM ---
+            const productGrid = document.getElementById('product-grid');
+            const menuTitle = document.getElementById('menu-title');
+            const categoryLinks = document.querySelectorAll('.category-link');
+            
+            const orderModal = document.getElementById('order-type-modal');
+            const closeOrderModalBtn = document.getElementById('close-order-modal');
+            
+            const sideCart = document.getElementById('side-cart');
+            const openCartBtn = document.getElementById('open-cart-btn');
+            const closeCartBtn = document.getElementById('close-cart-btn');
+            const cartItemsContainer = document.getElementById('cart-items-container');
+            const cartEmptyMsg = document.getElementById('cart-empty-msg');
+            const cartSubtotalEl = document.getElementById('cart-subtotal');
+            const cartCountEl = document.getElementById('cart-count');
+
+            // --- Estado del Carrito ---
+            let cart = [];
+
+            // --- Lógica para mostrar productos ---
+            const renderProducts = (category = 'all') => {
+                productGrid.innerHTML = '';
+                
+                const filteredProducts = category === 'all' 
+                    ? products 
+                    : products.filter(p => p.category === category);
+
+                if (filteredProducts.length === 0) {
+                    productGrid.innerHTML = `<p style="color: var(--text-muted);">No hay productos en esta categoría.</p>`;
+                    return;
+                }
+
+                filteredProducts.forEach(product => {
+                    const card = document.createElement('div');
+                    card.className = 'product-card';
+                    card.innerHTML = `
+                        <div class="product-placeholder">${product.emoji}</div>
+                        <div class="product-info">
+                            <h3>${product.name}</h3>
+                            <p>${product.description}</p>
+                            <div class="product-footer">
+                                <span class="product-price">$${product.price.toFixed(2)}</span>
+                                <button class="add-to-cart-btn" data-id="${product.id}">+</button>
+                            </div>
+                        </div>
+                    `;
+                    productGrid.appendChild(card);
+                });
+            };
+
+            // --- Lógica del Carrito ---
+            const updateCart = () => {
+                // Limpiar vista
+                cartItemsContainer.innerHTML = '';
+
+                if (cart.length === 0) {
+                    cartItemsContainer.appendChild(cartEmptyMsg);
+                    cartEmptyMsg.style.display = 'block';
+                } else {
+                    cartEmptyMsg.style.display = 'none';
+                    cart.forEach(item => {
+                        const cartItemDiv = document.createElement('div');
+                        cartItemDiv.className = 'cart-item';
+                        cartItemDiv.innerHTML = `
+                            <div class="cart-item-info">
+                                <h4>${item.name}</h4>
+                                <span class="cart-item-price">$${(item.price * item.quantity).toFixed(2)}</span>
+                            </div>
+                            <div class="cart-item-quantity">
+                                <button class="quantity-btn" data-id="${item.id}" data-action="decrease">-</button>
+                                <span>${item.quantity}</span>
+                                <button class="quantity-btn" data-id="${item.id}" data-action="increase">+</button>
+                            </div>
+                        `;
+                        cartItemsContainer.appendChild(cartItemDiv);
+                    });
+                }
+                
+                // Actualizar subtotal
+                const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+                cartSubtotalEl.textContent = `$${subtotal.toFixed(2)}`;
+
+                // Actualizar contador del ícono
+                const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+                if (totalItems > 0) {
+                    cartCountEl.textContent = totalItems;
+                    cartCountEl.style.display = 'flex';
+                } else {
+                    cartCountEl.style.display = 'none';
+                }
+            };
+            
+            const addToCart = (productId) => {
+                const product = products.find(p => p.id === productId);
+                const cartItem = cart.find(item => item.id === productId);
+
+                if (cartItem) {
+                    cartItem.quantity++;
+                } else {
+                    cart.push({ ...product, quantity: 1 });
+                }
+                updateCart();
+            };
+            
+            const adjustQuantity = (productId, action) => {
+                 const cartItemIndex = cart.findIndex(item => item.id === productId);
+                 if (cartItemIndex > -1) {
+                    if (action === 'increase') {
+                        cart[cartItemIndex].quantity++;
+                    } else if (action === 'decrease') {
+                        cart[cartItemIndex].quantity--;
+                        if (cart[cartItemIndex].quantity <= 0) {
+                            cart.splice(cartItemIndex, 1); // Remover del carrito
+                        }
+                    }
+                 }
+                 updateCart();
+            };
+
+
+            // --- Event Listeners ---
+            
+            // Modal de tipo de pedido
+            orderModal.style.display = 'flex'; // Mostrar al cargar
+            closeOrderModalBtn.addEventListener('click', () => orderModal.style.display = 'none');
+            window.addEventListener('click', (e) => {
+                if (e.target === orderModal) {
+                    orderModal.style.display = 'none';
+                }
+            });
+
+            // Carrito lateral
+            openCartBtn.addEventListener('click', () => sideCart.classList.add('open'));
+            closeCartBtn.addEventListener('click', () => sideCart.classList.remove('open'));
+
+            // Filtrado de categorías
+            categoryLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    
+                    categoryLinks.forEach(l => l.classList.remove('active'));
+                    e.target.classList.add('active');
+
+                    const category = e.target.getAttribute('data-category');
+                    menuTitle.textContent = e.target.textContent;
+                    renderProducts(category);
+                });
+            });
+
+            // Añadir al carrito (usando delegación de eventos)
+            productGrid.addEventListener('click', (e) => {
+                if (e.target.classList.contains('add-to-cart-btn')) {
+                    const productId = parseInt(e.target.getAttribute('data-id'));
+                    addToCart(productId);
+                    sideCart.classList.add('open'); // Abrir carrito al agregar
+                }
+            });
+            
+            // Ajustar cantidad en el carrito
+            cartItemsContainer.addEventListener('click', e => {
+                if (e.target.classList.contains('quantity-btn')) {
+                    const productId = parseInt(e.target.dataset.id);
+                    const action = e.target.dataset.action;
+                    adjustQuantity(productId, action);
+                }
+            });
+
+            // --- Inicialización ---
+            renderProducts(); // Renderizar todos los productos al inicio
+            updateCart(); // Iniciar el carrito
+        });
+    </script>
 </body>
 </html>
